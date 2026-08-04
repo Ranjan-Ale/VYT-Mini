@@ -2,11 +2,13 @@ const express = require("express")
 const bcrypt = require("bcrypt")
 const userModel = require("./models/user")
 const jwt = require("jsonwebtoken")
+const cookieParser = require("cookie-parser")
 
 const app = express()
 app.set('view engine','ejs')
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(cookieParser())
 
 
 app.get('/', function (req,res){
@@ -15,6 +17,10 @@ app.get('/', function (req,res){
 
 app.get("/login", (req,res)=>{
     res.render("login")
+})
+
+app.get("/profile", isLoggedIn,(req,res)=>{
+    res.send("profile page")
 })
 
 app.get("/logout", (req,res)=>{
@@ -60,5 +66,13 @@ app.post("/login", async (req, res)=>{
     }
 })
 
+function isLoggedIn(req,res,next){
+    if (req.cookies.token ===  "") res.send("you must be logged in")
+    else{
+        let data = jwt.verify(req.cookies.token, "secret_key")
+        req.user = data
+        next();
+    }
+}
 
 module.exports = app
