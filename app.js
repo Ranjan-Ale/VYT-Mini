@@ -20,9 +20,6 @@ app.get("/login", (req,res)=>{
     res.render("login")
 })
 
-app.get("/profile", isLoggedIn,(req,res)=>{
-    res.send("profile page")
-})
 
 app.get("/logout", (req,res)=>{
     res.cookie("token", "")
@@ -69,7 +66,7 @@ app.post("/post", isLoggedIn, async (req,res)=>{
     })
     user.posts.push(post._id)
     await user.save();
-    res.redirect("/profile")
+    res.redirect("profile")
 })
 
 app.post("/register", async (req,res)=>{
