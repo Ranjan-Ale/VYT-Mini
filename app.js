@@ -20,6 +20,10 @@ app.get("/login", (req,res)=>{
     res.render("login")
 })
 
+app.get("/profile", isLoggedIn,(req,res)=>{
+    res.send("profile page")
+})
+
 app.get("/logout", (req,res)=>{
     res.cookie("token", "")
     res.send("/login")
@@ -106,10 +110,12 @@ app.post("/login", async (req, res)=>{
     }
 })
 
+
 function isLoggedIn(req ,res, next){
     if(req.cookies.token == '') {
         res.status(500).send("you must be logged in") 
     }
+
     else{
         let data = jwt.verify(req.cookies.token, "secret_key")
         req.user = data
