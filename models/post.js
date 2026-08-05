@@ -10,4 +10,5 @@ const postSchema = mongoose.Schema({
     likes: [{type: mongoose.Schema.Types.ObjectId, ref: 'user'}]
 })
 
-module.exports = mongoose.model('post',postSchema)
+const postModel = mongoose.model("post", postSchema)
+module.exports = postModel
