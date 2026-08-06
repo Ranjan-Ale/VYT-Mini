@@ -14,13 +14,14 @@ app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname,"public")))
 
-app.get("/update/profile", (req,res)=>{
-    res.render("update_pp")
-})
 
-
+// rendering various pages in the website i.e GET API
 app.get("/", (req,res)=>{
     res.render("register")
+})
+
+app.get("/login", (req,res)=>{
+    res.render("login")
 })
 
 app.get("/profile", isLoggedIn, async (req,res)=>{
@@ -28,8 +29,8 @@ app.get("/profile", isLoggedIn, async (req,res)=>{
   res.render("profile", {user: user})
 })
 
-app.get("/login", (req,res)=>{
-    res.render("login")
+app.get("/update/profile", (req,res)=>{
+    res.render("update_pp")
 })
 
 app.get("/logout", (req,res)=>{
@@ -39,48 +40,8 @@ app.get("/logout", (req,res)=>{
     }
 })
 
-app.post("/update/profile", isLoggedIn, upload.single("uploaded_file"), async (req,res)=>{
-    let user = await userModel.findOneAndUpdate({_id: req.user._id}, {profile: req.file.filename})
-    await user.save()
-    res.redirect("/profile")
-})
 
-app.post("/create/post", isLoggedIn, async (req,res)=>{
-    const {content}= req.body
-    let user =await userModel.findOne({_id: req.user._id})
-    let post = await postModel.create({
-        content: content,
-        user: req.user._id
-    })
-    user.posts.push(post._id)
-    await user.save()
-    res.redirect("/profile")
-})
-
-app.get("/like/:id", isLoggedIn, async(req,res)=>{
-    let post = await postModel.findOne({_id: req.params.id}).populate('user')
-
-    if (post.likes.indexOf(req.user._id) === -1){
-        post.likes.push(req.user._id)
-    }else{
-        post.likes.splice(post.likes.indexOf(req.user._id),1)
-    }
-    await post.save()
-    res.redirect("/profile")
-})
-
-app.get("/edit/:id", isLoggedIn, async (req,res)=>{
-    let post = await postModel.findOne({_id: req.params.id})
-    res.render("edit",{post: post})
-})
-
-app.post("/update/:id", isLoggedIn, async(req,res)=>{
-    let {content}= req.body
-    let post = await postModel.findOneAndUpdate({_id: req.params.id}, {content: content})
-    await post.save()
-    res.redirect("/profile")
-})
-
+// handling various data related tasks provided by the user i.e POST API
 app.post("/register", async (req,res)=>{
     const {username, email, password} = req.body
     const user = await userModel.findOne({
@@ -127,6 +88,49 @@ app.post("/login", async (req,res)=>{
     });
 })
 
+app.post("/update/profile", isLoggedIn, upload.single("uploaded_file"), async (req,res)=>{
+    let user = await userModel.findOneAndUpdate({_id: req.user._id}, {profile: req.file.filename})
+    await user.save()
+    res.redirect("/profile")
+})
+
+app.post("/create/post", isLoggedIn, async (req,res)=>{
+    const {content}= req.body
+    let user =await userModel.findOne({_id: req.user._id})
+    let post = await postModel.create({
+        content: content,
+        user: req.user._id
+    })
+    user.posts.push(post._id)
+    await user.save()
+    res.redirect("/profile")
+})
+
+app.get("/like/:id", isLoggedIn, async(req,res)=>{
+    let post = await postModel.findOne({_id: req.params.id}).populate('user')
+
+    if (post.likes.indexOf(req.user._id) === -1){
+        post.likes.push(req.user._id)
+    }else{
+        post.likes.splice(post.likes.indexOf(req.user._id),1)
+    }
+    await post.save()
+    res.redirect("/profile")
+})
+
+app.get("/edit/:id", isLoggedIn, async (req,res)=>{
+    let post = await postModel.findOne({_id: req.params.id})
+    res.render("edit",{post: post})
+})
+
+app.post("/update/:id", isLoggedIn, async(req,res)=>{
+    let {content}= req.body
+    let post = await postModel.findOneAndUpdate({_id: req.params.id}, {content: content})
+    await post.save()
+    res.redirect("/profile")
+})
+
+// custom middleware
 function isLoggedIn(req, res, next){
     if (req.cookies.token == ""){
         res.status(500).send("user must be logged in")
