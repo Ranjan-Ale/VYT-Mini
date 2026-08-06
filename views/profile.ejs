@@ -4,35 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+      <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body>
-    <h1>Hello! <%= user.username %></h1>
-    <br>
-    <h2>Create your post</h2>
-    <form action="/create/post" method="post">
-        <textarea name="content" placeholder="write some content"></textarea><br>
-        <input type="submit" value="Create Post">
-    </form>
-    <br>
-    <% if (user.posts.length > 0 ) { %>
-        <%  user.posts.forEach(function(post) { %>
-            <div>
+    <div class=" mt-5 ml-5 mr-5 mb-5">
 
-                <div><%= post.content %></div>
-                <small><%= post.likes.length %> likes</small><br>
-                <a href="/like/<%= post._id %>">
-                    <%= (post.likes.indexOf(user._id)? "like": "unlike") %> 
-                </a>
-                <br>
-                <a href="/edit/<%= post._id %>">Edit</a> 
-                    
+        <div class="flex gap-3 ">
+            <div class="h-20 w-20 bg-blue-300 rounded-md overflow-hidden">
+                <img class="w-full h-full object-cover" src="files/uploads/<%= user.profile %>" alt="<%= user.username %>">
             </div>
             
-            <br><br>
-        <% }) %>
-    <% }else{ %>
-        <div>post not available</div>
-    <% } %>
+            <h1>Hello! <%= user.username %></h1>
+        </div>
+        
+        <br>
+        <h2>Create your post</h2>
+        <form action="/create/post" method="post">
+            <textarea name="content" placeholder="write some content" required></textarea><br>
+            <input type="submit" value="Create Post">
+        </form>
+        <br>
+        <% if (user.posts.length > 0 ) { %>
+            <%  user.posts.forEach(function(post) { %>
+                <div>
+
+                    <div><%= post.content %></div>
+                    <small><%= post.likes.length %> likes</small><br>
+                    <a href="/like/<%= post._id %>">
+                        <%= (post.likes.indexOf(user._id)? "like": "unlike") %> 
+                    </a>
+                    <br>
+                    <a href="/edit/<%= post._id %>">Edit</a> 
+                        
+                </div>
+                
+                <br><br>
+            <% }) %>
+        <% }else{ %>
+            <div>post not available</div>
+        <% } %>
+
+    </div>
+    
 
 </body>
 </html>
