@@ -1,0 +1,31 @@
+{
+  "name": "vyt-mini",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ranjan-Ale/VYT-Mini.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Ranjan-Ale/VYT-Mini/issues"
+  },
+  "homepage": "https://github.com/Ranjan-Ale/VYT-Mini#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.9.1",
+    "multer": "^2.2.0"
+  },
+  "allowScripts": {
+    "bcrypt@6.0.0": true
+  }
+}
