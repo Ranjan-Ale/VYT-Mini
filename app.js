@@ -8,7 +8,7 @@ const productsRouter = require("./routes/productsRouter")
 const usersRouter = require("./routes/usersRouter")
 
 app.set("view engine", "ejs")
-app.use(express.urlencoded({ extended: true}))
+app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, "public")))
 

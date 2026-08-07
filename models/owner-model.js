@@ -13,4 +13,6 @@ const ownerSchema = mongoose.Schema({
     gstno: String,
 })
 
-const userModel = mongoose.model("owner", ownerSchema)
+const ownerModel = mongoose.model("owner", ownerSchema)
+
+module.exports = ownerModel
