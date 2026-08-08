@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const productSchema = mongoose.Schema({
-    image: String,
+    image: Buffer,
     name: String,
     price: Number,
     discount: {
@@ -13,5 +13,5 @@ const productSchema = mongoose.Schema({
     textcolor: String
 })
 
-const porductModel = mongoose.model("product", productSchema)
-module.exports = porductModel
+const productModel = mongoose.model("product", productSchema)
+module.exports = productModel
